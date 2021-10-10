@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+#### NOTE: This project does not have any target platform build settings, please set them in `build-tools/electron-config.js`.
+
 ## Available Scripts
 
 In the project directory, you can run:
