@@ -1,26 +1,30 @@
 {
-  "name": "yt-video",
+  "name": "electron-react-ts-starter",
   "version": "0.1.0",
+  "main": "electron/electron.js",
+  "author": "CHANGE_ME",
+  "description": "CHANGE_ME",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
+    "electron-is-dev": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
-    "typescript": "^4.1.2",
+    "styled-components": "^5.3.1",
+    "typescript": "^4.4.3",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "concurrently --kill-others --success=first 'yarn start:web' 'wait-on tcp:3000 && NODE_ENV=development yarn start:electron'",
+    "start:web": "cross-env BROWSER=none react-scripts start",
+    "start:electron": "yarn run _compile:electron && electron .",
+    "build:web": "react-scripts build",
+    "build:electron": "yarn _compile:electron && yarn _move:electron && electron-builder --config build-tools/electron-config.js",
+    "_compile:electron": "yarn run tsc electron/electron.ts",
+    "_move:electron": "mv electron/electron.js build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:desktop": "cross-env ELECTRON_IS_DEV=0 && yarn build:web && yarn build:electron -c.extraMetadata.main=./build/electron.js"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +43,20 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/styled-components": "^5.1.15",
+    "concurrently": "^6.3.0",
+    "cross-env": "^7.0.3",
+    "electron": "^15.1.2",
+    "electron-builder": "^22.13.1",
+    "wait-on": "^6.0.0"
   }
 }
